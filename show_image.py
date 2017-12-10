@@ -3,6 +3,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
+from kivy.clock import Clock
 
 import glob
 
@@ -11,6 +12,15 @@ IMAGE_COUNT = 0
 BASE_FILE_PATH = '../data/*.jpg'
 
 PATH = glob.iglob(BASE_FILE_PATH)
+
+class Ai:
+	def __call__(self, dt):
+		print('hello')
+		IMAGE_COUNT = 0
+		return False
+
+ai = Ai()
+trigger = Clock.create_trigger(ai)
 
 class HelloApp(App):
     def build(self):
@@ -44,9 +54,12 @@ class GoodBtn(Button):
 	def onclick(self):
 		global LABEL_LIST
 		global IMAGE_COUNT
+		global trigger
 
 		LABEL_LIST.append(0)
 		IMAGE_COUNT += 1
+		if IMAGE_COUNT == 100:
+			trigger()
 
 class NotGoodBtn(Button):
 	def onclick(self):
@@ -55,6 +68,8 @@ class NotGoodBtn(Button):
 
 		LABEL_LIST.append(1)
 		IMAGE_COUNT += 1
+		if IMAGE_COUNT == 100:
+			trigger()
 
 class SexyBtn(Button):
 	def onclick(self):
@@ -63,6 +78,8 @@ class SexyBtn(Button):
 
 		LABEL_LIST.append(2)
 		IMAGE_COUNT += 1
+		if IMAGE_COUNT == 100:
+			trigger()
 
 class NotClearBtn(Button):
 	def onclick(self):
@@ -71,6 +88,8 @@ class NotClearBtn(Button):
 
 		LABEL_LIST.append(-1)
 		IMAGE_COUNT += 1
+		if IMAGE_COUNT == 100:
+			trigger()
 
 if __name__ == '__main__':
 	HelloApp().run()
