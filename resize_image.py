@@ -28,7 +28,7 @@ def process_thread(coord, tr_id):
 			img_dict[temp] = padded.tolist()
 
 			# file_path.write(temp + ' ')
-			util.view_bar("processing image of " ,index, 10)
+			util.view_bar("processing image of " ,index, 2)
 		else:
 			coord.request_stop()
 

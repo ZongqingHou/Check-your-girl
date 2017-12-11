@@ -11,11 +11,15 @@ MOVING_AVERAGE_DECAY = 0.99
 NUM_CHANNELS = 3
 TRAINING_STEPS = 1000
 
-def train(img_x, label_y):
+def train(img_x, label_y, check_path):
+	image_raw_data = tf.gfile.FastGFile(check_path, 'rb').read()
+
 	x = tf.placeholder(tf.float32, [len(img_x), NODE_SIZE, NODE_SIZE, NUM_CHANNELS], name='x-input')
+	# x_ = tf.placeholder(tf.float32, [1, NODE_SIZE, NODE_SIZE, NUM_CHANNELS], name='check-input')
 	y_ = tf.placeholder(tf.float32, [None, 1], name='y-input')
 
 	regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATRION_RATE)
+
 	y = inference(x, False, regularizer)
 
 	global_step = tf.Variable(0, trainable=False)
@@ -38,6 +42,11 @@ def train(img_x, label_y):
 		tf.global_variables_initializer().run()
 
 		for step in range(TRAINING_STEPS):
-			sess.run([train_op, loss, global_step], feed_dict={x: img_x, y_: label_y})
+			test, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: img_x, y_: label_y})
 			util.view_bar("processing step of " , step, 1000)
-			print(loss_value)
+
+			# img_data = tf.image.decode_jpeg(image_raw_data)
+			# img_data = tf.image.convert_image_dtype(img_data, dtype=tf.float32)
+			# padded = tf.reshape(tf.image.resize_image_with_crop_or_pad(img_data, 300, 300), [1, NODE_SIZE, NODE_SIZE, NUM_CHANNELS]).eval()
+
+			# print(sess.run(y, feed_dict={x_: padded}))
