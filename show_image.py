@@ -24,7 +24,7 @@ with open('tempdata.json') as json_file:
 class Ai:
 	def __call__(self, dt):
 		IMAGE_COUNT = 0
-		tensor.train(list(img_dict.values()), np.array(LABEL_LIST).reshape(10, 1))
+		tensor.train(list(img_dict.values()), np.array(LABEL_LIST).reshape(2, 1), sys.argv[1])
 		return False
 
 class HelloApp(App):
@@ -64,7 +64,7 @@ class GoodBtn(Button):
 		global IMAGE_COUNT
 		global trigger
 
-		if IMAGE_COUNT < 10:
+		if IMAGE_COUNT < 2:
 			LABEL_LIST.append(0)
 			IMAGE_COUNT += 1
 
@@ -73,7 +73,7 @@ class NotGoodBtn(Button):
 		global LABEL_LIST
 		global IMAGE_COUNT
 
-		if IMAGE_COUNT < 10:
+		if IMAGE_COUNT < 2:
 			LABEL_LIST.append(1)
 			IMAGE_COUNT += 1
 
@@ -82,7 +82,7 @@ class SexyBtn(Button):
 		global LABEL_LIST
 		global IMAGE_COUNT
 
-		if IMAGE_COUNT < 10:
+		if IMAGE_COUNT < 2:
 			LABEL_LIST.append(2)
 			IMAGE_COUNT += 1
 
@@ -91,7 +91,7 @@ class NotClearBtn(Button):
 		global LABEL_LIST
 		global IMAGE_COUNT
 
-		if IMAGE_COUNT < 10:
+		if IMAGE_COUNT < 2:
 			LABEL_LIST.append(-1)
 			IMAGE_COUNT += 1
 
