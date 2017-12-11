@@ -24,17 +24,4 @@ saver = tf.train.Saver()
 
 with tf.Session() as sess:
 	tf.global_variables_initializer().run()
-
-	# input_x = glob.iglob('./data/*.jpg')
-
-	# image_show = Image.open(temp)
-	# image_show.show()
-	image = tf.gfile.FastGFile('test.jpeg', 'rb').read()
-	image_input = tf.image.decode_jpeg(image)
-	image_data = tf.image.convert_image_dtype(image_input, dtype=tf.float32)
-	x_input_ = tf.reshape(tf.image.resize_image_with_crop_or_pad(image_data, NODE_SIZE, NODE_SIZE), [1, NODE_SIZE, NODE_SIZE, NUM_CHANNELS]).eval()
-
-	print(sess.run(y, feed_dict={x: x_input_}))
-	# y_input_ = np.array([[input('Type your choice (0, not good; 1, good; 2, sexy; 9, not clear):\n')]])
-
-	# test, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: x_input_, y_: y_input_})
+	test, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: x_input_, y_: y_input_})
