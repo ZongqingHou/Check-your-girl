@@ -1,4 +1,16 @@
 import tensorflow as tf
+import numpy as np
+
+OUTPUT_NODE = 1
+
+NUM_CHANNELS = 3
+
+CONV1_DEEP = 32
+CONV1_SIZE = 5
+CONV2_DEEP = 64
+CONV2_SIZE = 5
+
+FC_SIZE = 512
 
 def inference(input_tensor, train, regularizer):
 	with tf.variable_scope('layer1-conv1'):

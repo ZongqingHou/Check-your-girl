@@ -5,22 +5,27 @@ from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 
-import glob
+import numpy as np
+import tensor
+import resize_image
+import sys
 
 LABEL_LIST = []
 IMAGE_COUNT = 0
-BASE_FILE_PATH = '../data/*.jpg'
 
-PATH = glob.iglob(BASE_FILE_PATH)
+img_dict = resize_image.resize_()
+PATH = iter(img_dict.keys())
+
+'''
+with open('tempdata.json') as json_file:
+	data = json.load(json_file)
+'''
 
 class Ai:
 	def __call__(self, dt):
-		print('hello')
 		IMAGE_COUNT = 0
+		tensor.train(list(img_dict.values()), np.array(LABEL_LIST).reshape(10, 1))
 		return False
-
-ai = Ai()
-trigger = Clock.create_trigger(ai)
 
 class HelloApp(App):
     def build(self):
@@ -48,7 +53,10 @@ class ShowImageLayout(BoxLayout):
 
 	def set_source(self, obj):
 		global PATH
-		self.source = next(PATH)
+		try:
+			self.source = next(PATH)
+		except StopIteration:
+			trigger()
 
 class GoodBtn(Button):
 	def onclick(self):
@@ -56,40 +64,39 @@ class GoodBtn(Button):
 		global IMAGE_COUNT
 		global trigger
 
-		LABEL_LIST.append(0)
-		IMAGE_COUNT += 1
-		if IMAGE_COUNT == 100:
-			trigger()
+		if IMAGE_COUNT < 10:
+			LABEL_LIST.append(0)
+			IMAGE_COUNT += 1
 
 class NotGoodBtn(Button):
 	def onclick(self):
 		global LABEL_LIST
 		global IMAGE_COUNT
 
-		LABEL_LIST.append(1)
-		IMAGE_COUNT += 1
-		if IMAGE_COUNT == 100:
-			trigger()
+		if IMAGE_COUNT < 10:
+			LABEL_LIST.append(1)
+			IMAGE_COUNT += 1
 
 class SexyBtn(Button):
 	def onclick(self):
 		global LABEL_LIST
 		global IMAGE_COUNT
 
-		LABEL_LIST.append(2)
-		IMAGE_COUNT += 1
-		if IMAGE_COUNT == 100:
-			trigger()
+		if IMAGE_COUNT < 10:
+			LABEL_LIST.append(2)
+			IMAGE_COUNT += 1
 
 class NotClearBtn(Button):
 	def onclick(self):
 		global LABEL_LIST
 		global IMAGE_COUNT
 
-		LABEL_LIST.append(-1)
-		IMAGE_COUNT += 1
-		if IMAGE_COUNT == 100:
-			trigger()
+		if IMAGE_COUNT < 10:
+			LABEL_LIST.append(-1)
+			IMAGE_COUNT += 1
 
 if __name__ == '__main__':
+	ai = Ai()
+	trigger = Clock.create_trigger(ai)
+
 	HelloApp().run()
